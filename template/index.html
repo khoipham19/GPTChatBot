@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+</head>
+<body>
+
+<h2>Chat with GPT-3 Date Helper</h2>
+<form id="chatForm">
+    Name: <input type="text" id="name"><br>
+    Age: <input type="text" id="age"><br>
+    You said: <textarea id="user_input"></textarea><br>
+    Your date said: <textarea id="date_input"></textarea><br>
+    <input type="submit" value="Get Reply">
+</form>
+
+<h3>Bot's Reply:</h3>
+<p id="botReply"></p>
+
+<script>
+    document.getElementById('chatForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        let name = document.getElementById('name').value;
+        let age = document.getElementById('age').value;
+        let user_input = document.getElementById('user_input').value;
+        let date_input = document.getElementById('date_input').value;
+
+        fetch('/get-reply', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name,
+                age: age,
+                user_input: user_input,
+                date_input: date_input
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('botReply').textContent = data.reply;
+        });
+    });
+</script>
+
+</body>
+</html>
